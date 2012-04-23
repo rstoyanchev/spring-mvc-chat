@@ -32,7 +32,7 @@ $(document).ready(function() {
 					}
 				},
 				error : function(xhr) {
-					if (xhr.statusText != "abort") {
+					if (xhr.statusText != "abort" && xhr.status != 503) {
 						resetUI();
 						console.error("Unable to retrieve chat messages. Chat ended.");
 					}

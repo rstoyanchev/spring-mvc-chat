@@ -1,5 +1,6 @@
 package org.springframework.samples.async.chat;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +35,7 @@ public class ChatController {
 	@ResponseBody
 	public Object getMessages(@PathVariable String topic, @PathVariable String user, @RequestParam int messageIndex) {
 		ChatParticipant participant = getChatParticipant(topic, user);
-		DeferredResult deferredResult = new DeferredResult();
+		DeferredResult deferredResult = new DeferredResult(Collections.emptyList());
 		List<String> messages = participant.getMessages(deferredResult, messageIndex);
 		return messages.isEmpty() ? deferredResult : messages;
 	}

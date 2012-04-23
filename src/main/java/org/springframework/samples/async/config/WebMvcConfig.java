@@ -27,8 +27,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	}
 
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("index");
-		registry.addViewController("/chat").setViewName("chat/main");
+		registry.addViewController("/").setViewName("chat");
 	}
 
 	@Override
