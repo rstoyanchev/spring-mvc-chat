@@ -33,6 +33,8 @@ public class ChatParticipant {
 
 	private final String topic;
 
+	private final String userName;
+
 	private DeferredResult deferredResult;
 
 	private int messageIndex;
@@ -42,11 +44,13 @@ public class ChatParticipant {
 	private final Object lock = new Object();
 
 	/**
-	 * Create a new instance.
+	 * Create a new instance and post a 'User joined the chat message'.
 	 */
-	public ChatParticipant(String topic, ChatRepository chatRepository) {
+	public ChatParticipant(String topic, String userName, ChatRepository chatRepository) {
 		this.topic = topic;
+		this.userName = userName;
 		this.chatRepository = chatRepository;
+		this.chatRepository.addMessage(this.topic, "=> " + this.userName + " joined the chat");
 	}
 
 	/**
@@ -90,10 +94,11 @@ public class ChatParticipant {
 	}
 
 	/**
-	 * End the DeferredResult.
+	 * End the DeferredResult and post a 'User left the chat' message.
 	 */
 	public void exitChat() {
 		setResult(Collections.<String>emptyList());
+		this.chatRepository.addMessage(this.topic, "=> " + this.userName + " left the chat");
 	}
 
 	private boolean matchesTopic(String topic) {

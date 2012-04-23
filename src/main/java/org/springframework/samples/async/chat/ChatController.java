@@ -1,10 +1,14 @@
 package org.springframework.samples.async.chat;
 
+import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +19,9 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 @Controller
 @RequestMapping("/mvc/chat/{topic}/{user}")
-public class ChatController {
+public class ChatController implements MessageListener {
+
+	private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
 	private final Map<String, ChatParticipant> chatParticipants = new ConcurrentHashMap<String, ChatParticipant>();
 
@@ -27,6 +33,18 @@ public class ChatController {
 	}
 
 	/**
+	 * Process new chat message notifications from Redis.
+	 */
+	@Override
+	public void onMessage(Message message, byte[] pattern) {
+		String topic = new String(message.getChannel(), DEFAULT_CHARSET);
+		String messageText = new String(message.getBody(), DEFAULT_CHARSET);
+		for (ChatParticipant participant : this.chatParticipants.values()) {
+			participant.handleMessage(topic.substring("chat:".length()), messageText);
+		}
+	}
+
+	/**
 	 * Return chat messages immediately or hold the response till new chat messages
 	 * become available.
 	 */
@@ -34,7 +52,7 @@ public class ChatController {
 	@ResponseBody
 	public Object getMessages(@PathVariable String topic, @PathVariable String user, @RequestParam int messageIndex) {
 		ChatParticipant participant = getChatParticipant(topic, user);
-		DeferredResult deferredResult = new DeferredResult();
+		DeferredResult deferredResult = new DeferredResult(Collections.emptyList());
 		List<String> messages = participant.getMessages(deferredResult, messageIndex);
 		return messages.isEmpty() ? deferredResult : messages;
 	}
@@ -43,11 +61,12 @@ public class ChatController {
 		String key = topic + ":" + user;
 		ChatParticipant participant = this.chatParticipants.get(key);
 		if (participant == null) {
-			participant = new ChatParticipant(topic, this.chatRepository);
+			participant = new ChatParticipant(topic, user, this.chatRepository);
 			this.chatParticipants.put(key, participant);
 		}
 		return participant;
 	}
+
 
 	/**
 	 * Post a message to participants in the chat.
@@ -55,11 +74,7 @@ public class ChatController {
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
 	public void postMessage(@PathVariable String topic, @PathVariable String user, @RequestParam String message) {
-		String chatMessage = "[" + user + "] " + message;
-		this.chatRepository.addMessage(topic, chatMessage);
-		for (ChatParticipant participant : this.chatParticipants.values()) {
-			participant.handleMessage(topic, chatMessage);
-		}
+		this.chatRepository.addMessage(topic, "[" + user + "] " + message);
 	}
 
 	/**
