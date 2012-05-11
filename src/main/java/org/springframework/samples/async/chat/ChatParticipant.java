@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.context.request.async.StaleAsyncWebRequestException;
 
 /**
  * Represents a user participating in a chat.
@@ -79,10 +78,7 @@ public class ChatParticipant {
 
 	private void setResult(List<String> messages) {
 		try {
-			this.deferredResult.set(messages);
-		}
-		catch (StaleAsyncWebRequestException e) {
-			// ignore
+			this.deferredResult.trySet(messages);
 		}
 		finally {
 			this.deferredResult = null;
