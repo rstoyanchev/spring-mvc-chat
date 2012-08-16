@@ -52,7 +52,7 @@ public class ChatController implements MessageListener {
 	@ResponseBody
 	public Object getMessages(@PathVariable String topic, @PathVariable String user, @RequestParam int messageIndex) {
 		ChatParticipant participant = getChatParticipant(topic, user);
-		DeferredResult deferredResult = new DeferredResult(Collections.emptyList());
+		DeferredResult<List<String>> deferredResult = new DeferredResult<List<String>>(null, Collections.<String>emptyList());
 		List<String> messages = participant.getMessages(deferredResult, messageIndex);
 		return messages.isEmpty() ? deferredResult : messages;
 	}

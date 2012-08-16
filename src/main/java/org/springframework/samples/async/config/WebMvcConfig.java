@@ -3,7 +3,7 @@ package org.springframework.samples.async.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.samples.async.chat.ChatController;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -15,8 +15,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 @Configuration
-@EnableScheduling
-@ComponentScan(basePackages = { "org.springframework.samples.async" })
+@ComponentScan(basePackageClasses = ChatController.class)
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 	@Override
