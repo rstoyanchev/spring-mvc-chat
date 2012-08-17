@@ -32,7 +32,7 @@ public class ChatParticipant {
 
 	private final String topic;
 
-	private DeferredResult deferredResult;
+	private DeferredResult<List<String>> deferredResult;
 
 	private int messageIndex;
 
@@ -52,7 +52,7 @@ public class ChatParticipant {
 	 * Return messages starting at the specified index if any are available.
 	 * Or hold off and use the DeferredResult when new messages arrive.
 	 */
-	public List<String> getMessages(DeferredResult deferredResult, int messageIndex) {
+	public List<String> getMessages(DeferredResult<List<String>> deferredResult, int messageIndex) {
 		synchronized (this.lock) {
 			List<String> messages = this.chatRepository.getMessages(this.topic, messageIndex);
 			this.deferredResult = messages.isEmpty() ? deferredResult : null;
@@ -71,17 +71,9 @@ public class ChatParticipant {
 		synchronized (this.lock) {
 			if (this.deferredResult != null) {
 				List<String> messages = this.chatRepository.getMessages(this.topic, this.messageIndex);
-				setResult(messages);
+				this.deferredResult.setResult(messages);
+				this.deferredResult = null;
 			}
-		}
-	}
-
-	private void setResult(List<String> messages) {
-		try {
-			this.deferredResult.trySet(messages);
-		}
-		finally {
-			this.deferredResult = null;
 		}
 	}
 
@@ -89,7 +81,8 @@ public class ChatParticipant {
 	 * End the DeferredResult.
 	 */
 	public void exitChat() {
-		setResult(Collections.<String>emptyList());
+		this.deferredResult.setResult(Collections.<String>emptyList());
+		this.deferredResult = null;
 	}
 
 	private boolean matchesTopic(String topic) {
