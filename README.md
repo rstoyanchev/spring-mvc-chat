@@ -1,5 +1,13 @@
 
+### Note
+
+There is a bug that affects Tomcat 7.0.29 (see [Bug 53623](https://issues.apache.org/bugzilla/show_bug.cgi?id=53623). To use Tomcat to run this sample, you will need Tomcat 7.0.30 or a nightly 7.0.x snapshot (not yet available at the time of writing).
+
+### Overview
+
 A distributed version of the Spring MVC 3.2 chat sample using Redis for persisting messages as well as for handling distributed pub-sub notifications.
+
+### Instructions
 
 For this version of the sample you will need to [download](http://redis.io/download), install, and start a Redis instance, which can be done in just a few minutes following the [quickstart](http://redis.io/topics/quickstart) steps. Later on you may also find it helpful to refer to the [Spring Redis](http://www.springsource.org/spring-data/redis) reference [documentation](http://static.springsource.org/spring-data/data-redis/docs/current/reference/).
 
@@ -7,7 +15,7 @@ Once a Redis instance is up and running you can start the sample via `mvn tomcat
 
 Eclipse users, run `mvn eclipse:eclipse` and then import the project. Or just import the code as a Maven project into IntelliJ, NetBeans, or Eclipse.
 
-**Tips**:
+### Tips
 
 While the sample is running, you can send commands through the Redis command-line interface:
 ````
