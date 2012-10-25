@@ -3,6 +3,7 @@ package org.springframework.samples.async.chat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +53,10 @@ public class ChatController {
 	}
 
 	private void updateChatRequests() {
-		for (DeferredResult<List<String>> result : this.chatRequests.keySet()) {
-			Integer index = this.chatRequests.remove(result);
-			List<String> messages = this.chatRepository.getMessages(index);
-			result.setResult(messages);
+		for (Entry<DeferredResult<List<String>>, Integer> entry : this.chatRequests.entrySet()) {
+			this.chatRequests.remove(entry.getKey());
+			List<String> messages = this.chatRepository.getMessages(entry.getValue());
+			entry.getKey().setResult(messages);
 		}
 	}
 
