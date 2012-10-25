@@ -40,7 +40,7 @@ public class RootConfig {
 	public RedisMessageListenerContainer redisMessageListenerContainer() {
 		RedisMessageListenerContainer mlc = new RedisMessageListenerContainer();
 		mlc.setConnectionFactory(redisConnectionFactory());
-		mlc.addMessageListener(this.chatController , new PatternTopic("chat:*"));
+		mlc.addMessageListener(this.chatController , new PatternTopic("chat"));
 		return mlc;
 	}
 

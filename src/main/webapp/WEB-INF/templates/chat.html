@@ -7,7 +7,7 @@
 <body>
 	<h1>Chat</h1>
 	
-	<form id="joinChatForm" th:action="@{/mvc/chat/general}" data-bind="visible: activePollingXhr() == null">
+	<form id="joinChatForm" th:action="@{/mvc/chat}" data-bind="visible: activePollingXhr() == null">
 		<p>
 			<label for="user">User: </label>
 			<input id="user" name="user" type="text" data-bind="value: userName"/>
@@ -16,7 +16,7 @@
 		</p>
 	</form>
 
-	<form id="leaveChatForm" th:action="@{/mvc/chat/general}" data-bind="visible: activePollingXhr() != null">
+	<form id="leaveChatForm" th:action="@{/mvc/chat}" data-bind="visible: activePollingXhr() != null">
 		<p>
 			You're chatting as <strong data-bind="text: userName"></strong>
 			<button id="leave" type="submit" data-bind="click: leaveChat">Leave Chat</button>
@@ -27,7 +27,7 @@
 		<textarea rows="15" cols="60" readonly="readonly" data-bind="text: chatContent"></textarea>
 	</div>
 	
-	<form id="postMessageForm" th:action="@{/mvc/chat/general}" data-bind="visible: activePollingXhr() != null">
+	<form id="postMessageForm" th:action="@{/mvc/chat}" data-bind="visible: activePollingXhr() != null">
 		<p>
 			<input id="message" name="message" type="text" data-bind="value: message" />
 			<button id="post" type="submit" data-bind="click: postMessage">Post</button>

@@ -18,13 +18,10 @@ package org.springframework.samples.async.chat;
 
 import java.util.List;
 
-/**
- * A repository for persisting chat messages.
- */
 public interface ChatRepository {
 
-	List<String> getMessages(String topic, int messageIndex);
+	List<String> getMessages(int messageIndex);
 
-	void addMessage(String topic, String message);
+	void addMessage(String message);
 
 }

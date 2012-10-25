@@ -34,15 +34,15 @@ public class RedisChatRepository implements ChatRepository {
 	}
 
 	@Override
-	public List<String> getMessages(String topic, int messageIndex) {
-		BoundListOperations<String, String> listOps = this.redisTemplate.boundListOps("chat:" + topic + ":archive");
+	public List<String> getMessages(int messageIndex) {
+		BoundListOperations<String, String> listOps = this.redisTemplate.boundListOps("chat:archive");
 		return listOps.range(messageIndex, -1);
 	}
 
 	@Override
-	public void addMessage(String topic, String message) {
-		this.redisTemplate.boundListOps("chat:" + topic + ":archive").rightPush(message);
-		this.redisTemplate.convertAndSend("chat:" + topic, message);
+	public void addMessage(String message) {
+		this.redisTemplate.boundListOps("chat:archive").rightPush(message);
+		this.redisTemplate.convertAndSend("chat", message);
 	}
 
 }

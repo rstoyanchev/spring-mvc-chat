@@ -24,7 +24,7 @@ $(document).ready(function() {
 				return;
 			}
 			var form = $("#joinChatForm");
-			that.activePollingXhr($.ajax({url : getChatUrl(form), type : "GET", data : form.serialize(),
+			that.activePollingXhr($.ajax({url : form.attr("action"), type : "GET", data : form.serialize(),
 				success : function(messages) {
 					for ( var i = 0; i < messages.length; i++) {
 						that.chatContent(that.chatContent() + messages[i] + "\n");
@@ -42,14 +42,11 @@ $(document).ready(function() {
 			$('#message').focus();
 		}
 
-		function getChatUrl(form) {
-			return form.attr("action") + "/" + that.userName();
-		}
-
 		that.postMessage = function() {
 			if (that.message().trim() != '') {
 				var form = $("#postMessageForm");
-				$.ajax({url : getChatUrl(form), type : "POST", data : form.serialize(),
+				$.ajax({url : form.attr("action"), type : "POST",
+				  data : "message=[" + that.userName() + "] " + $("#postMessageForm input[name=message]").val(),
 					error : function(xhr) {
 						console.error("Error posting chat message: status=" + xhr.status + ", statusText=" + xhr.statusText);
 					}
@@ -61,12 +58,6 @@ $(document).ready(function() {
 		that.leaveChat = function() {
 			that.activePollingXhr(null);
 			resetUI();
-			var form = $("#leaveChatForm");
-			$.ajax({url : getChatUrl(form), type : 'DELETE',
-				error : function(xhr) {
-					console.error("Error while leaving chat: status=" + xhr.status + ", statusText=" + xhr.statusText);
-				}
-			});
 			this.userName('');
 		}
 
