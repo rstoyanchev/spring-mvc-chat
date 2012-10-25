@@ -1,7 +1,7 @@
 
 ### Note
 
-There is a bug that affects Tomcat 7.0.29 (see [Bug 53623](https://issues.apache.org/bugzilla/show_bug.cgi?id=53623). To use Tomcat to run this sample, you will need Tomcat 7.0.30 or a nightly 7.0.x snapshot (not yet available at the time of writing).
+There is a bug that affects Tomcat 7.0.30 (see [Bug 53843](https://issues.apache.org/bugzilla/show_bug.cgi?id=53843). To use Tomcat to run this sample, you will need Tomcat 7.0.32 or higher.
 
 ### Overview
 
