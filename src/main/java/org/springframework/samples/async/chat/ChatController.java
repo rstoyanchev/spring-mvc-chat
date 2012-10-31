@@ -35,16 +35,23 @@ public class ChatController implements MessageListener {
 	@ResponseBody
 	public DeferredResult<List<String>> getMessages(@RequestParam int messageIndex) {
 
-		DeferredResult<List<String>> result = new DeferredResult<List<String>>(null, Collections.emptyList());
-		this.chatRequests.put(result, messageIndex);
+		final DeferredResult<List<String>> deferredResult = new DeferredResult<List<String>>(null, Collections.emptyList());
+		this.chatRequests.put(deferredResult, messageIndex);
+
+		deferredResult.onCompletion(new Runnable() {
+			@Override
+			public void run() {
+				chatRequests.remove(deferredResult);
+			}
+		});
 
 		List<String> messages = this.chatRepository.getMessages(messageIndex);
 		if (!messages.isEmpty()) {
-			this.chatRequests.remove(result);
-			result.setResult(messages);
+			this.chatRequests.remove(deferredResult);
+			deferredResult.setResult(messages);
 		}
 
-		return result;
+		return deferredResult;
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
@@ -58,7 +65,6 @@ public class ChatController implements MessageListener {
 	@Override
 	public void onMessage(Message message, byte[] pattern) {
 		for (Entry<DeferredResult<List<String>>, Integer> entry : this.chatRequests.entrySet()) {
-			this.chatRequests.remove(entry.getKey());
 			List<String> messages = this.chatRepository.getMessages(entry.getValue());
 			entry.getKey().setResult(messages);
 		}
