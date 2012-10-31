@@ -47,7 +47,6 @@ public class ChatController implements MessageListener {
 
 		List<String> messages = this.chatRepository.getMessages(messageIndex);
 		if (!messages.isEmpty()) {
-			this.chatRequests.remove(deferredResult);
 			deferredResult.setResult(messages);
 		}
 
