@@ -1,19 +1,18 @@
 
-### Note
-
-There is a bug that affects Tomcat 7.0.30 (see [Bug 53843](https://issues.apache.org/bugzilla/show_bug.cgi?id=53843). To use Tomcat to run this sample, you will need Tomcat 7.0.32 or higher.
-
 ### Overview
 
-A distributed version of the Spring MVC 3.2 chat sample using Redis for persisting messages as well as for handling distributed pub-sub notifications.
+A distributed version of the Spring MVC 3.2 chat sample using Redis for persistence.
+
+### Note
+
+There is a bug in Tomcat that affects this sample. Please use Tomcat 7.0.32 or higher.
+
 
 ### Instructions
 
 For this version of the sample you will need to [download](http://redis.io/download), install, and start a Redis instance, which can be done in just a few minutes following the [quickstart](http://redis.io/topics/quickstart) steps. Later on you may also find it helpful to refer to the [Spring Redis](http://www.springsource.org/spring-data/redis) reference [documentation](http://static.springsource.org/spring-data/data-redis/docs/current/reference/).
 
-Once a Redis instance is up and running you can start the sample via `mvn tomcat7:run` and access it at [http://localhost:8080/spring-mvc-chat](http://localhost:8080/spring-mvc-chat).
-
-Eclipse users, run `mvn eclipse:eclipse` and then import the project. Or just import the code as a Maven project into IntelliJ, NetBeans, or Eclipse.
+Eclipse users, run `mvn eclipse:eclipse` and import the project. Or just import the code as a Maven project into IntelliJ, NetBeans, or Eclipse.
 
 ### Tips
 
@@ -24,18 +23,19 @@ $ redis-cli
 
 For example to view the chat backlog:
 ````
-redis 127.0.0.1:6379> LRANGE chat:general:archive 0 -1
+redis 127.0.0.1:6379> LRANGE chat:archive 0 -1
 ````
 
 To clear the chat backlog:
 ````
-redis 127.0.0.1:6379> DEL chat:general:archive
+redis 127.0.0.1:6379> DEL chat:archive
 ````
 
 To post a message and send a notification to all running spring-mvc-chat web applications:
 ````
-redis 127.0.0.1:6379> RPUSH chat:general:archive "hello from the redis cli"
-redis 127.0.0.1:6379> PUBLISH chat:general "a new chat message was posted"
+redis 127.0.0.1:6379> RPUSH chat:archive "hello from the redis cli"
+redis 127.0.0.1:6379> PUBLISH chat "a new chat message was posted"
 ````
 
 You should see the effects of these commands through the browser interface or in the log output.
+
