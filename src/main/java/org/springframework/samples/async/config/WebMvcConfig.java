@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -19,7 +18,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 @Configuration
-@EnableScheduling
 @ComponentScan(basePackages = { "org.springframework.samples.async" })
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
@@ -30,7 +28,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 	@Override
 	protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new MappingJacksonHttpMessageConverter());
+		converters.add(new MappingJackson2HttpMessageConverter());
 	}
 
 	public void addViewControllers(ViewControllerRegistry registry) {

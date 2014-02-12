@@ -22,24 +22,24 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    @Override
-   protected Class<?>[] getRootConfigClasses() {
-           return null;
-   }
+	@Override
+	protected Class<?>[] getRootConfigClasses() {
+		return null;
+	}
 
-    @Override
-   protected Class<?>[] getServletConfigClasses() {
-           return new Class<?>[] { WebMvcConfig.class };
-   }
+	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		return new Class<?>[] { WebMvcConfig.class };
+	}
 
-   @Override
-   protected String[] getServletMappings() {
-           return new String[] { "/*" };
-   }
+	@Override
+	protected String[] getServletMappings() {
+		return new String[] { "/" };
+	}
 
-   @Override
-   protected void customizeRegistration(Dynamic registration) {
-           registration.setAsyncSupported(true);
-    }
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		registration.setAsyncSupported(true);
+	}
 
 }
