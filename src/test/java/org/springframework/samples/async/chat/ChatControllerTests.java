@@ -70,4 +70,13 @@ public class ChatControllerTests {
 		verify(this.chatRepository);
 	}
 
+	private void incorrectAssignmentInIfCondition() {
+		boolean value = false;
+		if (value = true) {
+			//do Something
+		} else {
+			//else Do Something
+		}
+	}
+
 }
