@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.easymock.EasyMock;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -43,6 +44,7 @@ public class ChatControllerTests {
 		this.mockMvc = standaloneSetup(new ChatController(this.chatRepository)).build();
 	}
 
+	@Ignore
 	@Test
 	public void getMessages() throws Exception {
 		List<String> messages = Arrays.asList("a", "b", "c");
@@ -66,6 +68,15 @@ public class ChatControllerTests {
 				.andExpect(request().asyncStarted());
 
 		verify(this.chatRepository);
+	}
+
+	private void incorrectAssignmentInIfCondition() {
+		boolean value = false;
+		if (value = true) {
+			//do Something
+		} else {
+			//else Do Something
+		}
 	}
 
 }
