@@ -110,7 +110,7 @@
 	<repositories>
 		<repository>
 			<id>SpringSource repository</id>
-			<url>http://repo.springsource.org/milestone</url>
+			<url>https://repo.springsource.org/milestone</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -120,7 +120,7 @@
 		</repository>
 		<repository>
 			<id>SpringSource snapshot repository</id>
-			<url>http://repo.springsource.org/snapshot</url>
+			<url>https://repo.springsource.org/snapshot</url>
 			<snapshots><enabled>true</enabled></snapshots>
 			<releases><enabled>false</enabled></releases>
 		</repository>
@@ -129,7 +129,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>apache.snapshots</id>
-			<url>http://repository.apache.org/content/groups/snapshots-group/</url>
+			<url>https://repository.apache.org/content/groups/snapshots-group/</url>
 		</pluginRepository>
 	</pluginRepositories>	
 
