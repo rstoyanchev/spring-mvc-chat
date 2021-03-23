@@ -7,14 +7,14 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
-@Controller
+@RestController
 @RequestMapping("/mvc/chat")
 public class ChatController {
 
@@ -29,8 +29,7 @@ public class ChatController {
 		this.chatRepository = chatRepository;
 	}
 
-	@RequestMapping(method=RequestMethod.GET)
-	@ResponseBody
+	@GetMapping
 	public DeferredResult<List<String>> getMessages(@RequestParam int messageIndex) {
 
 		final DeferredResult<List<String>> deferredResult = new DeferredResult<List<String>>(null, Collections.emptyList());
@@ -51,8 +50,7 @@ public class ChatController {
 		return deferredResult;
 	}
 
-	@RequestMapping(method=RequestMethod.POST)
-	@ResponseBody
+	@PostMapping
 	public void postMessage(@RequestParam String message) {
 
 		this.chatRepository.addMessage(message);
